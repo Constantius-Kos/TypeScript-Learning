@@ -1,0 +1,21 @@
+{
+  "name": "typescript-learning",
+  "version": "1.0.0",
+  "description": "My TypeScript learning journey with AI mentor",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "typescript",
+    "learning"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.1.11",
+    "typescript": "^5.7.2"
+  }
+}
