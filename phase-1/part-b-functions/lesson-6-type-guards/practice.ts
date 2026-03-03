@@ -5,68 +5,68 @@ export { };
 // =============================================================
 
 // -------------------------------------------------------------
-// ЗАДАЧА 1 — Разминка: typeof
+// ЗАВДАННЯ 1 — Розминка: typeof
 // -------------------------------------------------------------
-// Напиши функцию `describe(value: string | number): string`
-// Если value — строка: вернуть `"Строка длиной N символов"`
-// Если value — число: вернуть `"Число, удвоенное: N"`
+// Напиши функцію `describe(value: string | number): string`
+// Якщо value — рядок: повернути `"Рядок довжиною N символів"`
+// Якщо value — число: повернути `"Число, подвоєне: N"`
 //
-// Примеры:
-//   describe("hello") → "Строка длиной 5 символов"
-//   describe(7)       → "Число, удвоенное: 14"
+// Приклади:
+//   describe("hello") → "Рядок довжиною 5 символів"
+//   describe(7)       → "Число, подвоєне: 14"
 
-// Твой код:
+// Твій код:
 function describe(value: string | number): string {
-    if (typeof value === 'string') { return `строка длиной ${value.length} символов` }
-    return `Число удвоенное: ${value * 2}`
+    if (typeof value === 'string') { return `рядок довжиною ${value.length} символів` }
+    return `Число подвоєне: ${value * 2}`
 }
-console.log(describe('уйпидаджигурда'));
+console.log(describe('уйпідаджигурда'));
 console.log(describe(12));
 // -------------------------------------------------------------
-// ЗАДАЧА 2 — Основная: in оператор
+// ЗАВДАННЯ 2 — Основне: оператор in
 // -------------------------------------------------------------
-// Есть два типа:
+// Є два типи:
 //   type EmailContact = { email: string; sendEmail: () => void }
 //   type PhoneContact = { phone: string; call: () => void }
 //
-// Напиши функцию `contact(person: EmailContact | PhoneContact): void`
-// Если у person есть email — вызвать sendEmail() и вывести в консоль "Отправляем email на [email]"
-// Если у person есть phone — вызвать call() и вывести в консоль "Звоним на [phone]"
+// Напиши функцію `contact(person: EmailContact | PhoneContact): void`
+// Якщо у person є email — викликати sendEmail() і вивести в консоль "Відправляємо email на [email]"
+// Якщо у person є phone — викликати call() і вивести в консоль "Телефонуємо на [phone]"
 
-// Твой код:
+// Твій код:
 type EmailContact = { email: string; sendEmail: () => void }
 type PhoneContact = { phone: string; call: () => void }
 function contact(person: EmailContact | PhoneContact): void {
-    if ('email' in person) { person.sendEmail(); console.log(`Отправляем email на ${person.email}`); return }
+    if ('email' in person) { person.sendEmail(); console.log(`Відправляємо email на ${person.email}`); return }
 
-    person.call(); console.log(`Звоним на ${person.phone}`);
+    person.call(); console.log(`Телефонуємо на ${person.phone}`);
 }
 const emailUser: EmailContact = {
     email: "test@mail.com",
-    sendEmail: () => console.log("(метод sendEmail вызван)")
+    sendEmail: () => console.log("(метод sendEmail викликано)")
 };
 
 const phoneUser: PhoneContact = {
     phone: "+380663141977",
-    call: () => console.log("(метод call вызван)")
+    call: () => console.log("(метод call викликано)")
 }
 contact(emailUser);
 contact(phoneUser)
 // -------------------------------------------------------------
-// ЗАДАЧА 3 — Челлендж: пользовательский type guard
+// ЗАВДАННЯ 3 — Челендж: користувацький type guard
 // -------------------------------------------------------------
-// Есть типы:
+// Є типи:
 //   type Square = { kind: "square"; side: number }
 //   type Circle = { kind: "circle"; radius: number }
 //   type Shape = Square | Circle
 //
-// 1. Напиши type guard функцию `isSquare(shape: Shape): shape is Square`
-// 2. Напиши функцию `getArea(shape: Shape): number`
+// 1. Напиши type guard функцію `isSquare(shape: Shape): shape is Square`
+// 2. Напиши функцію `getArea(shape: Shape): number`
 //    - для Square: side * side
-//    - для Circle: Math.PI * radius * radius (можно округлить до 2 знаков)
-// 3. Используй isSquare внутри getArea
+//    - для Circle: Math.PI * radius * radius (можна округлити до 2 знаків)
+// 3. Використай isSquare всередині getArea
 
-// Твой код:
+// Твій код:
 type Square = { kind: "square"; side: number }
 type Circle = { kind: "circle"; radius: number }
 type Shape = Square | Circle

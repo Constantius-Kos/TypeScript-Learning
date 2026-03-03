@@ -1,11 +1,11 @@
 export {};
 
 // ============================================================
-// Урок 5: Function Overloads — Эталонное решение
+// Урок 5: Function Overloads — Еталонне рішення
 // ============================================================
 
 // -----------------------------------------------------------
-// ЗАДАНИЕ 1: Разминка
+// ЗАВДАННЯ 1: Розминка
 // -----------------------------------------------------------
 function describe(arg: string): number;
 function describe(arg: number): string;
@@ -20,7 +20,7 @@ console.log(a); // 5
 console.log(b); // "1234"
 
 // -----------------------------------------------------------
-// ЗАДАНИЕ 2: Основная задача
+// ЗАВДАННЯ 2: Основне завдання
 // -----------------------------------------------------------
 type GuestUser = { role: "guest"; sessionId: string };
 type AdminUser = { role: "admin"; name: string; permissions: string[] };
@@ -38,7 +38,7 @@ const user1 = createUser('guest'); // GuestUser
 const user2 = createUser('admin'); // AdminUser
 
 // -----------------------------------------------------------
-// ЗАДАНИЕ 3: Челлендж
+// ЗАВДАННЯ 3: Челендж
 // -----------------------------------------------------------
 function getFirst(arg: string): string | null;
 function getFirst(arg: number[]): number | null;

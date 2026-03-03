@@ -1,18 +1,18 @@
-// Решение к Уроку 1: Function types и type signatures
+// Рішення до Уроку 1: Function types і type signatures
 
 // ==========================================
-// 🎯 ЗАДАЧА 1: Разминка
+// 🎯 ЗАВДАННЯ 1: Розминка
 // ==========================================
 
 function createProfile(name: string, age: number): string {
-    return `Профиль: ${name}, возраст: ${age}`;
+    return `Профіль: ${name}, вік: ${age}`;
 }
 
-const myProfile = createProfile("Иван", 25);
+const myProfile = createProfile("Іван", 25);
 
 
 // ==========================================
-// 🎯 ЗАДАЧА 2: Основная (Работа с объектами)
+// 🎯 ЗАВДАННЯ 2: Основне (Робота з об'єктами)
 // ==========================================
 
 type Product = {
@@ -35,4 +35,4 @@ const cart: Product[] = [
 ];
 const sum = calculateTotal(cart);
 
-export { }; // Делаем файл модулем, чтобы изолировать область видимости
+export { }; // Робимо файл модулем, щоб ізолювати область видимості

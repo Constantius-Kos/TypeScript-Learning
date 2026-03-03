@@ -1,66 +1,66 @@
-# Урок 6: Type Guards (Защитники типов)
+# Урок 6: Type Guards (Захисники типів)
 
-**Статус:** В процессе
-**Дата:** 27 февраля 2026
-
----
-
-## 📌 Тема урока
-
-Type Guards — способы сказать TypeScript: "в этом блоке кода переменная точно имеет ВОТ ЭТОТ тип".
+**Статус:** В процесі
+**Дата:** 27 лютого 2026
 
 ---
 
-## 🎯 Цель урока
+## 📌 Тема уроку
 
-После урока ты сможешь:
-- Использовать `typeof` для проверки примитивных типов
-- Использовать `instanceof` для проверки классов/объектов
-- Писать собственные type guard функции с `is`
-- Объяснить зачем нужны type guards и когда их применять
+Type Guards — способи сказати TypeScript: "в цьому блоці коду змінна точно має ОСЬ ЦЕЙ тип".
+
+---
+
+## 🎯 Ціль уроку
+
+Після уроку ти зможеш:
+- Використовувати `typeof` для перевірки примітивних типів
+- Використовувати `instanceof` для перевірки класів/об'єктів
+- Писати власні type guard функції з `is`
+- Пояснити навіщо потрібні type guards і коли їх застосовувати
 
 ---
 
 ## 🤔 Проблема в JavaScript
 
 ```js
-// JS: функция принимает строку или число
+// JS: функція приймає рядок або число
 function double(value) {
-  return value * 2; // Если value — строка, получим "hellohello" вместо ошибки!
+  return value * 2; // Якщо value — рядок, отримаємо "hellohello" замість помилки!
 }
 
-double("hello"); // "hellohello" — тихая ошибка, JS не жалуется
+double("hello"); // "hellohello" — тиха помилка, JS не скаржиться
 double(5);       // 10 — ок
 ```
 
-В JS ты узнаёшь о проблеме только в runtime, когда баг уже в продакшне.
+В JS ти дізнаєшся про проблему тільки в runtime, коли баг вже в продакшні.
 
-В TS с union типом:
+В TS з union типом:
 ```ts
 function double(value: string | number) {
-  return value * 2; // ❌ Ошибка! TS не знает — строка это или число
+  return value * 2; // ❌ Помилка! TS не знає — рядок це чи число
 }
 ```
 
-TypeScript видит `string | number` и не разрешает операцию `* 2`, потому что она не работает для строк. Нужно **сначала проверить тип**, и тогда TS поймёт что делать.
+TypeScript бачить `string | number` і не дозволяє операцію `* 2`, тому що вона не працює для рядків. Потрібно **спочатку перевірити тип**, і тоді TS зрозуміє що робити.
 
 ---
 
-## 📖 Теория
+## 📖 Теорія
 
-### Что такое Type Guard?
+### Що таке Type Guard?
 
-**Type Guard** — это проверка типа в runtime, после которой TypeScript **сужает** (narrows) тип переменной внутри блока кода.
+**Type Guard** — це перевірка типу в runtime, після якої TypeScript **звужує** (narrows) тип змінної всередині блоку коду.
 
-Ключевое слово: **сужение (narrowing)**. Из широкого типа (`string | number`) TypeScript понимает что внутри `if`-блока тип конкретный (`string` или `number`).
+Ключове слово: **звуження (narrowing)**. З широкого типу (`string | number`) TypeScript розуміє що всередині `if`-блоку тип конкретний (`string` або `number`).
 
 ```ts
 function double(value: string | number) {
   if (typeof value === "string") {
-    // Здесь TypeScript ЗНАЕТ: value — это string
+    // Тут TypeScript ЗНАЄ: value — це string
     return value.repeat(2); // ✅ ok
   }
-  // Здесь TypeScript ЗНАЕТ: value — это number
+  // Тут TypeScript ЗНАЄ: value — це number
   return value * 2; // ✅ ok
 }
 ```
@@ -69,7 +69,7 @@ function double(value: string | number) {
 
 ### Type Guard #1: `typeof`
 
-Используется для **примитивных типов**: `string`, `number`, `boolean`, `bigint`, `symbol`, `undefined`, `function`.
+Використовується для **примітивних типів**: `string`, `number`, `boolean`, `bigint`, `symbol`, `undefined`, `function`.
 
 ```ts
 function process(value: string | number | boolean) {
@@ -81,22 +81,22 @@ function process(value: string | number | boolean) {
     console.log(value.toFixed(2));
   } else {
     // value: boolean
-    console.log(value ? "да" : "нет");
+    console.log(value ? "так" : "ні");
   }
 }
 ```
 
-**Важно:** `typeof null === "object"` — это историческая ошибка JS. Для проверки на `null` используй `=== null`.
+**Важливо:** `typeof null === "object"` — це історична помилка JS. Для перевірки на `null` використовуй `=== null`.
 
 ---
 
 ### Type Guard #2: `instanceof`
 
-Используется для **классов и объектов**: когда хочешь проверить "это экземпляр класса X?".
+Використовується для **класів і об'єктів**: коли хочеш перевірити "це екземпляр класу X?".
 
 ```ts
 class Cat {
-  meow() { return "Мяу!"; }
+  meow() { return "Няв!"; }
 }
 
 class Dog {
@@ -116,9 +116,9 @@ function makeSound(animal: Cat | Dog) {
 
 ---
 
-### Type Guard #3: "in" оператор
+### Type Guard #3: оператор "in"
 
-Проверяет наличие свойства в объекте. Полезен когда нет классов, просто объекты с разными полями.
+Перевіряє наявність властивості в об'єкті. Корисний коли немає класів, просто об'єкти з різними полями.
 
 ```ts
 type Fish = { swim: () => void };
@@ -137,24 +137,24 @@ function move(animal: Fish | Bird) {
 
 ---
 
-### Type Guard #4: Пользовательские type guards (функции с `is`)
+### Type Guard #4: Користувацькі type guards (функції з `is`)
 
-Иногда проверка сложная — тогда выносим её в отдельную функцию.
+Іноді перевірка складна — тоді виносимо її в окрему функцію.
 
-Синтаксис возвращаемого типа: `параметр is Тип`
+Синтаксис типу, що повертається: `параметр is Тип`
 
 ```ts
 type Cat = { name: string; meow: () => void };
 type Dog = { name: string; bark: () => void };
 
-// Функция-guard: возвращает boolean, но TypeScript знает больше
+// Функція-guard: повертає boolean, але TypeScript знає більше
 function isCat(animal: Cat | Dog): animal is Cat {
   return "meow" in animal;
 }
 
 function interact(animal: Cat | Dog) {
   if (isCat(animal)) {
-    // animal: Cat — TypeScript знает это благодаря `animal is Cat`
+    // animal: Cat — TypeScript знає це завдяки `animal is Cat`
     animal.meow();
   } else {
     // animal: Dog
@@ -163,39 +163,39 @@ function interact(animal: Cat | Dog) {
 }
 ```
 
-**Зачем `is` вместо просто `boolean`?**
+**Навіщо `is` замість просто `boolean`?**
 
-Если написать просто `: boolean` — TypeScript не сужает тип внутри `if`. Магия именно в `animal is Cat` — это сигнал компилятору.
+Якщо написати просто `: boolean` — TypeScript не звужує тип всередині `if`. Магія саме в `animal is Cat` — це сигнал компілятору.
 
 ---
 
-## 🔍 JS vs TS сравнение
+## 🔍 JS vs TS порівняння
 
 ```js
-// JavaScript — проверяем тип вручную, нет гарантий
+// JavaScript — перевіряємо тип вручну, немає гарантій
 function processJS(value) {
   if (typeof value === "string") {
     return value.toUpperCase();
   }
   return value * 2;
-  // Что если value — массив? JS молчит, получаем NaN
+  // Що якщо value — масив? JS мовчить, отримуємо NaN
 }
 ```
 
 ```ts
-// TypeScript — проверяем тип, и TS следит за полнотой
+// TypeScript — перевіряємо тип, і TS стежить за повнотою
 function processTS(value: string | number) {
   if (typeof value === "string") {
-    return value.toUpperCase(); // TS знает: string
+    return value.toUpperCase(); // TS знає: string
   }
-  return value * 2; // TS знает: number (string уже отсеян выше)
+  return value * 2; // TS знає: number (string вже відсіяний вище)
 }
-// Если добавить третий тип в union — TS скажет что случай не обработан
+// Якщо додати третій тип в union — TS скаже що випадок не оброблений
 ```
 
 ---
 
-## 💡 Реальный пример
+## 💡 Реальний приклад
 
 ```ts
 type ApiResponse =
@@ -205,28 +205,28 @@ type ApiResponse =
 function handleResponse(response: ApiResponse) {
   if (response.status === "success") {
     // response: { status: "success"; data: string[] }
-    console.log("Данные:", response.data.join(", "));
+    console.log("Дані:", response.data.join(", "));
   } else {
     // response: { status: "error"; message: string }
-    console.log("Ошибка:", response.message);
+    console.log("Помилка:", response.message);
   }
 }
 ```
 
-Это называется **discriminated union** — объединение с полем-дискриминатором (`status`). Очень частый паттерн в реальных проектах.
+Це називається **discriminated union** — об'єднання з полем-дискримінатором (`status`). Дуже частий патерн в реальних проектах.
 
 ---
 
 ## ✍️ Практика
 
-Смотри файл `practice.ts`
+Дивись файл `practice.ts`
 
 ---
 
-## 📝 Дополнительные заметки
+## 📝 Додаткові нотатки
 
-*(появятся по ходу урока)*
+*(з'являться в ході уроку)*
 
 ---
 
-**Обновлено:** 27 февраля 2026
+**Оновлено:** 27 лютого 2026

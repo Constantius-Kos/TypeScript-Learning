@@ -1,4 +1,5 @@
 # ‼️ STRICT PROTOCOL: MUST READ BEFORE EVERY RESPONSE ‼️
+0. ‼️ ВОПРОСЫ СТУДЕНТА: Ответы на дополнительные вопросы писать в `notes.md` текущего урока, НЕ в THEORY.md.
 1. EVERY response must strictly adhere to the rules below. No exceptions.
 2. ‼️ TERMINAL VERIFICATION: You MUST wait for and read the output of EVERY command. NEVER report success (e.g. "committed", "saved", "ran tests") without seeing a 0 exit code and success message. If a command fails, ACKNOWLEDGE IT and fix it before responding.
 3. ‼️ WINDOWS/POWERSHELL DISCIPLINE: Avoid `&&`. Run commands line-by-line or as separate tool calls to ensure visibility of failures.

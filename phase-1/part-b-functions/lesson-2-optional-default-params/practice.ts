@@ -1,57 +1,57 @@
 // ============================================================
-// Урок 2: Optional и default параметры функций
+// Урок 2: Optional і default параметри функцій
 // ============================================================
 // Запуск: npx ts-node practice.ts
 // ============================================================
 
 // ------------------------------------------------------------
-// Задача 1: РАЗМИНКА — Optional параметр (5-7 минут)
+// Завдання 1: РОЗМИНКА — Optional параметр (5-7 хвилин)
 // ------------------------------------------------------------
-// Напиши функцию printOrderInfo, которая принимает:
-//   - orderId: number (обязательный)
-//   - status: string (необязательный)
+// Напиши функцію printOrderInfo, яка приймає:
+//   - orderId: number (обов'язковий)
+//   - status: string (необов'язковий)
 //
-// Если status передан — выводи: "Заказ #[id]: [status]"
-// Если status НЕ передан — выводи: "Заказ #[id]: статус неизвестен"
+// Якщо status переданий — виводь: "Замовлення #[id]: [status]"
+// Якщо status НЕ переданий — виводь: "Замовлення #[id]: статус невідомий"
 //
-// Вызови функцию оба способами и убедись что оба работают.
+// Викличи функцію обома способами і переконайся що обидва працюють.
 
-// Твой код здесь:
+// Твій код тут:
 function printOrderInfo(orderId: number, status?: string) {
-  console.log(`заказ ${orderId}: ${status ?? 'статус неизвестен'} `);
+  console.log(`замовлення ${orderId}: ${status ?? 'статус невідомий'} `);
 }
-printOrderInfo(123, 'отправлен');
+printOrderInfo(123, 'відправлено');
 printOrderInfo(123);
 // ------------------------------------------------------------
-// Задача 2: ОСНОВНАЯ — Default параметры (10-15 минут)
+// Завдання 2: ОСНОВНЕ — Default параметри (10-15 хвилин)
 // ------------------------------------------------------------
-// Напиши функцию calculateShipping, которая считает стоимость доставки.
-// Параметры:
-//   - weight: number (вес посылки в кг, обязательный)
-//   - destination: string (направление, обязательный)
-//   - express: boolean (экспресс-доставка, по умолчанию false)
-//   - insurancePercent: number (страховка в %, по умолчанию 0)
+// Напиши функцію calculateShipping, яка рахує вартість доставки.
+// Параметри:
+//   - weight: number (вага посилки в кг, обов'язковий)
+//   - destination: string (напрямок, обов'язковий)
+//   - express: boolean (експрес-доставка, за замовчуванням false)
+//   - insurancePercent: number (страховка в %, за замовчуванням 0)
 //
-// Логика (придумай сам):
-//   - Базовая цена: weight * 100
-//   - Если express=true: цена * 2
-//   - Страховка добавляется как процент от итоговой цены
-//   - Функция возвращает объект: { destination, totalCost, express }
+// Логіка (придумай сам):
+//   - Базова ціна: weight * 100
+//   - Якщо express=true: ціна * 2
+//   - Страховка додається як відсоток від підсумкової ціни
+//   - Функція повертає об'єкт: { destination, totalCost, express }
 //
-// Вызови функцию 3 раза:
-//   1. Только weight и destination
-//   2. С express=true
-//   3. Со всеми параметрами
+// Викличи функцію 3 рази:
+//   1. Тільки weight і destination
+//   2. З express=true
+//   3. З усіма параметрами
 
-// Сначала объяви тип возвращаемого объекта:
+// Спочатку оголоси тип об'єкта, що повертається:
 type ShippingResult = {
   destination: string,
   totalCost: number,
   express: boolean
-  // заполни сам
+  // заповни сам
 };
 
-// Твоя функция:
+// Твоя функція:
 function calculateShipping(weight: number, destination: string, express: boolean = false, insurancePercent: number = 0): ShippingResult {
   return {
     destination,
@@ -65,29 +65,29 @@ console.log(calculateShipping(6, ' Huevo Kukuevo', true));
 console.log(calculateShipping(5, 'Huevo Kukuevo', true, 10));
 console.log(calculateShipping(5, 'Huevo Kukuevo', false, 10));
 // ------------------------------------------------------------
-// Задача 3: ЧЕЛЛЕНДЖ — Комбинируй optional и default (15-20 мин)
+// Завдання 3: ЧЕЛЕНДЖ — Комбінуй optional і default (15-20 хв)
 // ------------------------------------------------------------
-// Напиши функцию buildApiUrl которая собирает URL для API запроса.
-// Параметры:
-//   - baseUrl: string (обязательный, например "https://api.example.com")
-//   - endpoint: string (обязательный, например "/users")
-//   - version: string (по умолчанию "v1")
-//   - queryParams?: Record<string, string> (необязательный — объект с параметрами запроса)
+// Напиши функцію buildApiUrl яка збирає URL для API запиту.
+// Параметри:
+//   - baseUrl: string (обов'язковий, наприклад "https://api.example.com")
+//   - endpoint: string (обов'язковий, наприклад "/users")
+//   - version: string (за замовчуванням "v1")
+//   - queryParams?: Record<string, string> (необов'язковий — об'єкт з параметрами запиту)
 //
-// Результат: строка-URL вида:
+// Результат: рядок-URL виду:
 //   "https://api.example.com/v1/users"
 //   "https://api.example.com/v2/products?limit=10&page=2"
 //
-// Подсказка: для queryParams используй Object.entries() и .join("&")
-// Подсказка 2: Record<string, string> — это тип для объекта { ключ: строка }
-//   Например: { limit: "10", page: "2" }
+// Підказка: для queryParams використовуй Object.entries() і .join("&")
+// Підказка 2: Record<string, string> — це тип для об'єкта { ключ: рядок }
+//   Наприклад: { limit: "10", page: "2" }
 //
-// Вызови 3 раза:
-//   1. Только baseUrl и endpoint
-//   2. С другой версией API
-//   3. Со всеми параметрами включая queryParams
+// Викличи 3 рази:
+//   1. Тільки baseUrl і endpoint
+//   2. З іншою версією API
+//   3. З усіма параметрами включаючи queryParams
 
-// Твой код здесь:
+// Твій код тут:
 function buildApiUrl(baseUrl: string, endpoint: string, version: string = 'v1', queryParams?: Record<string, string>): string {
   return `${baseUrl}/${version}/${endpoint}${queryParams ? '?' + Object.entries(queryParams).map(([key, value]) => `${key}=${value}`).join('&') : ''}`
 }
@@ -96,28 +96,28 @@ console.log(buildApiUrl('www.test.com', 'home'));
 console.log(buildApiUrl('www.test.com', 'home', 'v2'));
 console.log((buildApiUrl('www.test.com', 'home', 'v3', { page: 'cabinet', options: 'subcribes' })));
 // ------------------------------------------------------------
-// Задача 4: ЗАКРЕПЛЕНИЕ — Optional + default (10 мин)
+// Завдання 4: ЗАКРІПЛЕННЯ — Optional + default (10 хв)
 // ------------------------------------------------------------
-// Напиши функцию formatUserName, которая форматирует имя пользователя.
-// Параметры:
-//   - firstName: string (обязательный)
-//   - lastName: string (обязательный)
-//   - middleName?: string (необязательный — отчество)
-//   - uppercase: boolean (по умолчанию false)
+// Напиши функцію formatUserName, яка форматує ім'я користувача.
+// Параметри:
+//   - firstName: string (обов'язковий)
+//   - lastName: string (обов'язковий)
+//   - middleName?: string (необов'язковий — по батькові)
+//   - uppercase: boolean (за замовчуванням false)
 //
-// Логика:
-//   - Если middleName передан: "Фамилия Имя Отчество"
-//   - Если не передан: "Фамилия Имя"
-//   - Если uppercase=true — весь результат в верхнем регистре
+// Логіка:
+//   - Якщо middleName переданий: "Прізвище Ім'я По батькові"
+//   - Якщо не переданий: "Прізвище Ім'я"
+//   - Якщо uppercase=true — весь результат у верхньому регістрі
 //
-// Подсказка: string.toUpperCase() переводит строку в верхний регистр
+// Підказка: string.toUpperCase() переводить рядок у верхній регістр
 //
-// Вызови 3 раза:
-//   1. Только имя и фамилия
-//   2. С отчеством
-//   3. С отчеством и uppercase=true
+// Викличи 3 рази:
+//   1. Тільки ім'я і прізвище
+//   2. З по батькові
+//   3. З по батькові і uppercase=true
 
-// Твой код здесь:
+// Твій код тут:
 function formatUserName(firstName: string, lastname: string, middleName?: string, uppercase: boolean = false): string {
   let username = middleName ? `${firstName} ${lastname} ${middleName}` : `${firstName} ${lastname}`
   return uppercase ? username.toUpperCase() : username
@@ -129,24 +129,24 @@ console.log((formatUserName('Vasya', 'Pupkin', 'Stepanovich', true)));
 
 
 // ------------------------------------------------------------
-// Задача 5: ЗАКРЕПЛЕНИЕ — Работа с массивом и default (10 мин)
+// Завдання 5: ЗАКРІПЛЕННЯ — Робота з масивом і default (10 хв)
 // ------------------------------------------------------------
-// Напиши функцию getTopItems, которая возвращает первые N элементов массива.
-// Параметры:
-//   - items: string[] (обязательный — массив строк)
-//   - count: number (по умолчанию 3 — сколько элементов вернуть)
-//   - separator: string (по умолчанию ", " — разделитель в результате)
+// Напиши функцію getTopItems, яка повертає перші N елементів масиву.
+// Параметри:
+//   - items: string[] (обов'язковий — масив рядків)
+//   - count: number (за замовчуванням 3 — скільки елементів повернути)
+//   - separator: string (за замовчуванням ", " — розділювач у результаті)
 //
-// Функция возвращает строку — элементы через разделитель.
+// Функція повертає рядок — елементи через розділювач.
 //
-// Подсказка: array.slice(0, count) возвращает первые count элементов массива
+// Підказка: array.slice(0, count) повертає перші count елементів масиву
 //
-// Вызови 3 раза:
-//   1. Только массив (берёт первые 3, через ", ")
-//   2. С count=2
-//   3. Со своим разделитором, например " | "
+// Викличи 3 рази:
+//   1. Тільки масив (бере перші 3, через ", ")
+//   2. З count=2
+//   3. Зі своїм розділювачем, наприклад " | "
 
-// Твой код здесь:
+// Твій код тут:
 function getTopItems(items: string[], count: number = 3, separator: string = ', '): string {
   return items.slice(0, count).join(separator)
 }

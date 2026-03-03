@@ -3,64 +3,64 @@ export { };
 // Урок 7: Type Narrowing
 // ================================================
 
-// --- Задача 1: Разминка — typeof narrowing ---
+// --- Завдання 1: Розминка — typeof narrowing ---
 //
-// Напиши функцию `describe(value: string | number | boolean): string`
-// которая возвращает описание переменной:
-// - если string: `"Строка: <значение в верхнем регистре>"`
-// - если number: `"Число: <значение * 2>"`
-// - если boolean: `"Булево: <true/false>"`
+// Напиши функцію `describe(value: string | number | boolean): string`
+// яка повертає опис змінної:
+// - якщо string: `"Рядок: <значення у верхньому регістрі>"`
+// - якщо number: `"Число: <значення * 2>"`
+// - якщо boolean: `"Булеве: <true/false>"`
 //
-// Пример:
-//   describe("hello") → "Строка: HELLO"
+// Приклад:
+//   describe("hello") → "Рядок: HELLO"
 //   describe(5)       → "Число: 10"
-//   describe(true)    → "Булево: true"
+//   describe(true)    → "Булеве: true"
 
-// твой код здесь:
+// твій код тут:
 function describe(value: string | number | boolean): string {
     switch (typeof value) {
         case 'string':
-            return `Строка: ${value.toUpperCase()}`
+            return `Рядок: ${value.toUpperCase()}`
         case 'number':
             return `Число: ${value * 2}`
         case 'boolean':
-            return `Булево ${value}`
+            return `Булеве ${value}`
         default:
 
-            throw new Error('Передан не верный тип')
+            throw new Error('Переданий невірний тип')
     }
 }
 describe('test')
-// --- Задача 2: Truthiness narrowing ---
+// --- Завдання 2: Truthiness narrowing ---
 //
-// Напиши функцию `getLength(value: string | null | undefined): number`
-// которая возвращает длину строки, или 0 если значение пустое/null/undefined
+// Напиши функцію `getLength(value: string | null | undefined): number`
+// яка повертає довжину рядка, або 0 якщо значення порожнє/null/undefined
 //
-// Пример:
+// Приклад:
 //   getLength("hello") → 5
-//   getLength(null)    → 0 
+//   getLength(null)    → 0
 //   getLength("")      → 0
 
-// твой код здесь:
+// твій код тут:
 function getLength(value: string | null | undefined): number {
     return value ? value.length : 0
 }
 getLength('43')
-// --- Задача 3: Discriminated union ---
+// --- Завдання 3: Discriminated union ---
 //
-// У нас есть три типа уведомлений:
+// У нас є три типи сповіщень:
 //   - EmailNotification: { kind: "email", to: string, subject: string }
 //   - SmsNotification:   { kind: "sms", phone: string, text: string }
 //   - PushNotification:  { kind: "push", deviceId: string, title: string }
 //
-// 1. Создай тип Notification = объединение всех трёх
-// 2. Напиши функцию `send(notification: Notification): string`
-//    которая возвращает строку с описанием отправки:
+// 1. Створи тип Notification = об'єднання всіх трьох
+// 2. Напиши функцію `send(notification: Notification): string`
+//    яка повертає рядок з описом відправки:
 //    - email: `"Email → <to>: <subject>"`
 //    - sms:   `"SMS → <phone>: <text>"`
 //    - push:  `"Push → <deviceId>: <title>"`
 
-// твои типы и код здесь:
+// твої типи і код тут:
 type EmailNotification = { kind: "email", to: string, subject: string }
 type SmsNotification = { kind: "sms", phone: string, text: string }
 type PushNotification = { kind: "push", deviceId: string, title: string }
@@ -75,24 +75,24 @@ type PushNotification = { kind: "push", deviceId: string, title: string }
 //             return `Push → ${notification.deviceId}: ${notification.title}`
 //         default:
 
-//             throw new Error('Ротбомжа')
+//             throw new Error('Невідомий тип')
 //     }
 
 
 
 // }
-// --- Задача 4 (Челлендж): Exhaustiveness checking ---
+// --- Завдання 4 (Челендж): Exhaustiveness checking ---
 //
-// Возьми типы из задачи 3 и добавь четвёртый тип:
+// Візьми типи із завдання 3 і додай четвертий тип:
 //   - SlackNotification: { kind: "slack", channel: string, message: string }
 //
-// Обнови тип Notification чтобы включал SlackNotification.
-// Добавь обработку "slack" в функцию send.
-// В конце switch добавь default с exhaustiveness check через never.
+// Онови тип Notification щоб включав SlackNotification.
+// Додай обробку "slack" у функцію send.
+// В кінці switch додай default з exhaustiveness check через never.
 //
-// Проверь: если убрать обработку "slack" — должна появиться ошибка TypeScript.
+// Перевір: якщо прибрати обробку "slack" — повинна з'явитися помилка TypeScript.
 
-// твой код здесь:
+// твій код тут:
 type SlackNotification = { kind: "slack", channel: string, message: string }
 type AppNotification = EmailNotification | SmsNotification | PushNotification | SlackNotification
 function send(notification: AppNotification): string {

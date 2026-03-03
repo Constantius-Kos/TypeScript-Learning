@@ -1,33 +1,33 @@
 export { };
 
-// Урок 8: Never и Unknown типы — Эталонное решение
+// Урок 8: Never і Unknown типи — Еталонне рішення
 // ================================================
 
-// --- Задача 1 ---
+// --- Завдання 1 ---
 function stringify(value: unknown): string {
     switch (typeof value) {
         case 'string':  return value;
         case 'number':  return String(value);
         case 'boolean': return String(value);
-        default:        return 'неизвестно';
+        default:        return 'невідомо';
     }
 }
 
-// --- Задача 2 ---
+// --- Завдання 2 ---
 function getErrorMessage(error: unknown): string {
     if (error instanceof Error) return error.message;
     if (typeof error === 'string') return error;
-    return 'Неизвестная ошибка';
+    return 'Невідома помилка';
 }
 
-// --- Задача 3 ---
+// --- Завдання 3 ---
 type Shape =
     | { kind: "circle"; radius: number }
     | { kind: "square"; side: number }
     | { kind: "triangle"; base: number; height: number }
 
 function assertNever(value: never): never {
-    throw new Error(`Необработанный случай: ${JSON.stringify(value)}`);
+    throw new Error(`Необроблений випадок: ${JSON.stringify(value)}`);
 }
 
 function getArea(shape: Shape): number {
@@ -39,7 +39,7 @@ function getArea(shape: Shape): number {
     }
 }
 
-// --- Задача 4 ---
+// --- Завдання 4 ---
 function safeParseUser(json: string): { name: string; age: number } | null {
     try {
         const parseResult: unknown = JSON.parse(json);

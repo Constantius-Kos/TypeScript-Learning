@@ -1,76 +1,76 @@
-# Урок 8: Never и Unknown типы
+# Урок 8: Never і Unknown типи
 
-**Статус:** В процессе
+**Статус:** В процесі
 **Дата:** 2026-03-01
 
 ---
 
-## 🎯 Цель урока
+## 🎯 Ціль уроку
 
-После этого урока ты будешь понимать:
-- Что такое `never` и `unknown` и зачем они существуют
-- Чем `unknown` отличается от `any` — и почему `unknown` лучше
-- Где эти типы встречаются в реальных проектах
+Після цього уроку ти будеш розуміти:
+- Що таке `never` і `unknown` і навіщо вони існують
+- Чим `unknown` відрізняється від `any` — і чому `unknown` краще
+- Де ці типи зустрічаються в реальних проектах
 
 ---
 
 ## 🤔 Проблема в JavaScript
 
 ```js
-// JS: получаем данные из внешнего источника
-const data = JSON.parse(userInput); // что внутри? Неизвестно!
+// JS: отримуємо дані із зовнішнього джерела
+const data = JSON.parse(userInput); // що всередині? Невідомо!
 
-data.name.toUpperCase(); // 💥 TypeError если name не строка
-data.forEach(...)        // 💥 TypeError если data не массив
+data.name.toUpperCase(); // 💥 TypeError якщо name не рядок
+data.forEach(...)        // 💥 TypeError якщо data не масив
 ```
 
-В JS ты не знаешь что пришло снаружи — и узнаёшь об ошибке только в рантайме.
+В JS ти не знаєш що прийшло ззовні — і дізнаєшся про помилку тільки в рантаймі.
 
 ---
 
-## 📖 Теория
+## 📖 Теорія
 
 ### Тип `unknown`
 
-`unknown` переводится как "неизвестный". Это **безопасная версия `any`**.
+`unknown` перекладається як "невідомий". Це **безпечна версія `any`**.
 
-Разница одна, но принципиальная:
-- `any` — TypeScript **отключает проверки**. Делай что хочешь.
-- `unknown` — TypeScript **требует проверить тип** прежде чем что-то делать.
+Різниця одна, але принципова:
+- `any` — TypeScript **вимикає перевірки**. Роби що хочеш.
+- `unknown` — TypeScript **вимагає перевірити тип** перш ніж щось робити.
 
 ```ts
-// any — TS молчит, даже если это бред
+// any — TS мовчить, навіть якщо це нісенітниця
 const a: any = "hello";
-a.toFixed(2);     // TS не ругается, хотя это метод числа!
-a.foo.bar.baz;    // TS не ругается! Всё разрешено.
+a.toFixed(2);     // TS не лається, хоча це метод числа!
+a.foo.bar.baz;    // TS не лається! Все дозволено.
 
-// unknown — TS заставляет проверить
+// unknown — TS змушує перевірити
 const u: unknown = "hello";
-u.toUpperCase();  // ❌ Ошибка: нельзя вызывать методы на unknown
-u.length;         // ❌ Ошибка: нельзя обращаться к свойствам
+u.toUpperCase();  // ❌ Помилка: не можна викликати методи на unknown
+u.length;         // ❌ Помилка: не можна звертатися до властивостей
 
-// Сначала проверяем — потом используем
+// Спочатку перевіряємо — потім використовуємо
 if (typeof u === "string") {
-    u.toUpperCase(); // ✅ Теперь TS знает что u — строка
+    u.toUpperCase(); // ✅ Тепер TS знає що u — рядок
 }
 ```
 
-**Аналогия из жизни:**
-`any` — это посылка без маркировки, которую ты открываешь и суёшь руку внутрь.
-`unknown` — посылка без маркировки, которую ты сначала просвечиваешь на рентгене, а потом открываешь.
+**Аналогія з життя:**
+`any` — це посилка без маркування, яку ти відкриваєш і суєш руку всередину.
+`unknown` — посилка без маркування, яку ти спочатку просвічуєш на рентгені, а потім відкриваєш.
 
 ---
 
-### Где используется `unknown`
+### Де використовується `unknown`
 
-**1. Обработка ошибок в try/catch**
+**1. Обробка помилок в try/catch**
 
 ```ts
 try {
-    // что-то опасное
+    // щось небезпечне
 } catch (error) {
-    // В TS 4.0+ error имеет тип unknown (раньше был any)
-    // Нельзя просто написать error.message — нужно проверить
+    // В TS 4.0+ error має тип unknown (раніше був any)
+    // Не можна просто написати error.message — потрібно перевірити
 
     if (error instanceof Error) {
         console.log(error.message); // ✅
@@ -78,19 +78,19 @@ try {
 }
 ```
 
-**2. Данные из внешних источников**
+**2. Дані із зовнішніх джерел**
 
 ```ts
 function parseConfig(json: string): unknown {
-    return JSON.parse(json); // возвращаем unknown, а не any
+    return JSON.parse(json); // повертаємо unknown, а не any
 }
 
 const config = parseConfig('{"port": 3000}');
 
-// Нельзя сразу использовать:
-config.port; // ❌ Ошибка
+// Не можна одразу використовувати:
+config.port; // ❌ Помилка
 
-// Нужно проверить:
+// Потрібно перевірити:
 if (typeof config === "object" && config !== null && "port" in config) {
     console.log(config.port); // ✅
 }
@@ -100,27 +100,27 @@ if (typeof config === "object" && config !== null && "port" in config) {
 
 ### Тип `never`
 
-`never` — это **пустой тип**. Значение типа `never` **не может существовать**.
+`never` — це **порожній тип**. Значення типу `never` **не може існувати**.
 
-Ты уже видел `never` в уроке 7 (exhaustiveness check). Но есть ещё случаи:
+Ти вже бачив `never` в уроці 7 (exhaustiveness check). Але є ще випадки:
 
-**1. Функция которая никогда не возвращает**
+**1. Функція яка ніколи не повертає**
 
 ```ts
-// Всегда бросает ошибку
+// Завжди кидає помилку
 function fail(message: string): never {
     throw new Error(message);
 }
 
-// Бесконечный цикл
+// Нескінченний цикл
 function forever(): never {
     while (true) {
-        // слушаем события сервера...
+        // слухаємо події сервера...
     }
 }
 ```
 
-**2. Невозможная ветка кода**
+**2. Неможлива гілка коду**
 
 ```ts
 function process(value: string | number) {
@@ -129,17 +129,17 @@ function process(value: string | number) {
     } else if (typeof value === "number") {
         // value: number
     } else {
-        // value: never — TypeScript знает что сюда нельзя попасть
-        // Эта ветка "мертва"
+        // value: never — TypeScript знає що сюди не можна потрапити
+        // Ця гілка "мертва"
     }
 }
 ```
 
-**3. Exhaustiveness check (из урока 7)**
+**3. Exhaustiveness check (з уроку 7)**
 
 ```ts
 function assertNever(value: never): never {
-    throw new Error(`Необработанный случай: ${JSON.stringify(value)}`);
+    throw new Error(`Необроблений випадок: ${JSON.stringify(value)}`);
 }
 ```
 
@@ -147,32 +147,32 @@ function assertNever(value: never): never {
 
 ### `never` vs `void` vs `unknown` vs `any`
 
-| Тип | Значение | Можно присвоить | Можно использовать |
+| Тип | Значення | Можна присвоїти | Можна використовувати |
 |---|---|---|---|
-| `any` | всё что угодно | что угодно | что угодно (без проверок) |
-| `unknown` | неизвестно что | что угодно | только после проверки типа |
-| `void` | undefined | только undefined | нет (только return) |
-| `never` | не существует | ничего | — |
+| `any` | все що завгодно | що завгодно | що завгодно (без перевірок) |
+| `unknown` | невідомо що | що завгодно | тільки після перевірки типу |
+| `void` | undefined | тільки undefined | ні (тільки return) |
+| `never` | не існує | нічого | — |
 
 ---
 
-### Когда использовать `unknown` вместо `any`
+### Коли використовувати `unknown` замість `any`
 
-**Правило:** всегда когда данные приходят извне и ты не знаешь их тип:е
+**Правило:** завжди коли дані приходять ззовні і ти не знаєш їх тип:
 ```ts
-// ❌ Плохо — any отключает все проверки
+// ❌ Погано — any вимикає всі перевірки
 function handleApiResponse(data: any) {
-    return data.users[0].name; // TS молчит, но это может сломаться
+    return data.users[0].name; // TS мовчить, але це може зламатися
 }
 
-// ✅ Хорошо — unknown заставит проверить
+// ✅ Добре — unknown змусить перевірити
 function handleApiResponse(data: unknown) {
     if (
         typeof data === "object" &&
         data !== null &&
         "users" in data
     ) {
-        // теперь безопасно
+        // тепер безпечно
     }
 }
 ```
@@ -182,24 +182,24 @@ function handleApiResponse(data: unknown) {
 ## 🔍 JS vs TS
 
 ```js
-// JS — никаких гарантий
+// JS — жодних гарантій
 function riskyOperation(value) {
-    return value.toString(); // 💥 если value = null
+    return value.toString(); // 💥 якщо value = null
 }
 ```
 
 ```ts
-// TS с unknown — компилятор заставит проверить
+// TS з unknown — компілятор змусить перевірити
 function safeOperation(value: unknown): string {
     if (value === null || value === undefined) {
-        return "пусто";
+        return "порожньо";
     }
-    return String(value); // ✅ безопасно
+    return String(value); // ✅ безпечно
 }
 ```
 
 ---
 
-## 📝 Дополнительные заметки
+## 📝 Додаткові нотатки
 
-*(Здесь будут появляться ответы на твои вопросы)*
+*(Тут будуть з'являтися відповіді на твої питання)*

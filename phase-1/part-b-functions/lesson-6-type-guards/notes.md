@@ -1,43 +1,43 @@
-# Заметки — Урок 6: Type Guards
+# Нотатки — Урок 6: Type Guards
 
-*(твои личные заметки по уроку)*
+*(твої особисті нотатки по уроку)*
 
 ---
 
-## ❓ Вопрос: `type ApiResponse = | {...} | {...}` — это union interface?
+## ❓ Питання: `type ApiResponse = | {...} | {...}` — це union interface?
 
-Да, по сути это **union из двух объектных типов**.
+Так, по суті це **union з двох об'єктних типів**.
 
 ```ts
 type ApiResponse =
-  | { status: "success"; data: string[] }   // анонимный объектный тип
-  | { status: "error"; message: string };   // анонимный объектный тип
+  | { status: "success"; data: string[] }   // анонімний об'єктний тип
+  | { status: "error"; message: string };   // анонімний об'єктний тип
 ```
 
-Можно расписать через именованные типы — результат тот же:
+Можна розписати через іменовані типи — результат той самий:
 ```ts
 type Success  = { status: "success"; data: string[] };
 type ApiError = { status: "error"; message: string };
 type ApiResponse = Success | ApiError;
 ```
 
-**Почему не interface?**
-Interface не умеет делать `|` сам по себе.
-Для union всегда нужен `type`:
+**Чому не interface?**
+Interface не вміє робити `|` сам по собі.
+Для union завжди потрібен `type`:
 ```ts
 interface Success { ... }
 interface ApiError { ... }
-type ApiResponse = Success | ApiError; // ← type обязателен для union
+type ApiResponse = Success | ApiError; // ← type обов'язковий для union
 ```
 
 ---
 
-## ❓ Вопрос: зачем ведущий `|` в `type X = | {...} | {...}`?
+## ❓ Питання: навіщо ведучий `|` в `type X = | {...} | {...}`?
 
-Никакой разницы — это чисто стиль форматирования.
+Жодної різниці — це суто стиль форматування.
 
 ```ts
-// одно и то же:
+// одне і те саме:
 type ApiResponse = { status: "success" } | { status: "error" };
 
 type ApiResponse =
@@ -45,5 +45,5 @@ type ApiResponse =
   | { status: "error" };
 ```
 
-Ведущий `|` используют когда вариантов много — каждый на своей строке, легче читать.
-Современный TS-код чаще использует ведущий `|`.
+Ведучий `|` використовують коли варіантів багато — кожен на своєму рядку, легше читати.
+Сучасний TS-код частіше використовує ведучий `|`.

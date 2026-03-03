@@ -1,24 +1,24 @@
 export { };
 
-// Урок 8: Never и Unknown типы
+// Урок 8: Never і Unknown типи
 // ================================================
 
-// --- Задача 1: Разминка — unknown vs any ---
+// --- Завдання 1: Розминка — unknown vs any ---
 //
-// Напиши функцию `stringify(value: unknown): string`
-// которая безопасно превращает любое значение в строку:
-// - если string — возвращает как есть
-// - если number — возвращает как строку (String(value))
-// - если boolean — возвращает "true" или "false"
-// - иначе — возвращает "неизвестно"
+// Напиши функцію `stringify(value: unknown): string`
+// яка безпечно перетворює будь-яке значення на рядок:
+// - якщо string — повертає як є
+// - якщо number — повертає як рядок (String(value))
+// - якщо boolean — повертає "true" або "false"
+// - інакше — повертає "невідомо"
 //
-// Пример:
+// Приклад:
 //   stringify("hello")  → "hello"
 //   stringify(42)       → "42"
 //   stringify(true)     → "true"
-//   stringify(null)     → "неизвестно"
+//   stringify(null)     → "невідомо"
 
-// твой код здесь:
+// твій код тут:
 function stringify(value: unknown): string {
     switch (typeof value) {
         case 'string':
@@ -29,24 +29,24 @@ function stringify(value: unknown): string {
             return String(value)
 
         default:
-            return 'неизвестно'
+            return 'невідомо'
     }
 }
 stringify('test')
-// --- Задача 2: Обработка ошибок с unknown ---
+// --- Завдання 2: Обробка помилок з unknown ---
 //
-// В TypeScript catch(error) имеет тип unknown.
-// Напиши функцию `getErrorMessage(error: unknown): string`
-// которая возвращает текст ошибки:
-// - если error — это Error объект: возвращает error.message
-// - если error — строка: возвращает её напрямую
-// - иначе: возвращает "Неизвестная ошибка"
+// В TypeScript catch(error) має тип unknown.
+// Напиши функцію `getErrorMessage(error: unknown): string`
+// яка повертає текст помилки:
+// - якщо error — це Error об'єкт: повертає error.message
+// - якщо error — рядок: повертає його напряму
+// - інакше: повертає "Невідома помилка"
 //
-// Пример использования:
+// Приклад використання:
 //   try { ... }
 //   catch (error) { console.log(getErrorMessage(error)); }
 
-// твой код здесь:
+// твій код тут:
 function getErrorMessage(error: unknown): string {
     if (error instanceof Error) {
         return error.message
@@ -54,34 +54,34 @@ function getErrorMessage(error: unknown): string {
     if (typeof error === 'string') {
         return error
     }
-    return 'неизвестная ошибка'
+    return 'невідома помилка'
 }
 getErrorMessage('test')
-// --- Задача 3: never как exhaustiveness check ---
+// --- Завдання 3: never як exhaustiveness check ---
 //
-// Есть тип фигуры:
+// Є тип фігури:
 //   type Shape =
 //     | { kind: "circle"; radius: number }
 //     | { kind: "square"; side: number }
 //     | { kind: "triangle"; base: number; height: number }
 //
-// 1. Напиши функцию `assertNever(value: never): never`
-// 2. Напиши функцию `getArea(shape: Shape): number` которая:
+// 1. Напиши функцію `assertNever(value: never): never`
+// 2. Напиши функцію `getArea(shape: Shape): number` яка:
 //    - circle:   Math.PI * radius ** 2
 //    - square:   side ** 2
 //    - triangle: (base * height) / 2
-//    - default:  вызывает assertNever (exhaustiveness check)
+//    - default:  викликає assertNever (exhaustiveness check)
 //
-// Проверь: закомментируй один case — должна появиться ошибка TS.
+// Перевір: закоментуй один case — повинна з'явитися помилка TS.
 
-// твой код здесь:
+// твій код тут:
 type Shape =
     | { kind: "circle"; radius: number }
     | { kind: "square"; side: number }
     | { kind: "triangle"; base: number; height: number }
 
 function assertNever(value: never): never {
-    throw new Error('передан необрабатываемый тип')
+    throw new Error('переданий необроблюваний тип')
 }
 function getArea(shape: Shape): number {
     switch (shape.kind) {
@@ -96,26 +96,26 @@ function getArea(shape: Shape): number {
     }
 }
 getArea({ kind: "circle", radius: 32 })
-// --- Задача 4 (Челлендж): Безопасный парсер JSON ---
+// --- Завдання 4 (Челендж): Безпечний парсер JSON ---
 //
-// Напиши функцию `safeParseUser(json: string)`
-// которая парсит JSON и возвращает объект с полями:
+// Напиши функцію `safeParseUser(json: string)`
+// яка парсить JSON і повертає об'єкт з полями:
 //   { name: string; age: number }
-// или null если данные невалидны.
+// або null якщо дані невалідні.
 //
-// Требования:
-// - используй unknown (не any!) для результата JSON.parse
-// - проверь что результат — объект (не null)
-// - проверь что есть поле name типа string
-// - проверь что есть поле age типа number
-// - если что-то не так — return null
+// Вимоги:
+// - використовуй unknown (не any!) для результату JSON.parse
+// - перевір що результат — об'єкт (не null)
+// - перевір що є поле name типу string
+// - перевір що є поле age типу number
+// - якщо щось не так — return null
 //
-// Пример:
+// Приклад:
 //   safeParseUser('{"name":"Alice","age":30}')  → { name: "Alice", age: 30 }
-//   safeParseUser('{"name":"Bob"}')             → null (нет age)
+//   safeParseUser('{"name":"Bob"}')             → null (немає age)
 //   safeParseUser('not json')                   → null
 
-// твой код здесь:
+// твій код тут:
 function safeParseUser(json: string): { name: string; age: number } | null {
     try {
         const parseResult: unknown = JSON.parse(json)

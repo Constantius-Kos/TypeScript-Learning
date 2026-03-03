@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "lesson": "ts-node"
   },
   "keywords": [
     "typescript",
@@ -16,6 +17,7 @@
   "license": "MIT",
   "devDependencies": {
     "nodemon": "^3.1.11",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   }
 }

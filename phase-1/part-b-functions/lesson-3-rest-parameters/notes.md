@@ -1,1 +1,1 @@
-# Мои заметки — Урок 3: Rest parameters
+# Мої нотатки — Урок 3: Rest parameters

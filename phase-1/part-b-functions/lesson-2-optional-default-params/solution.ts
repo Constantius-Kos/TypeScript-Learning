@@ -1,18 +1,18 @@
 // ============================================================
-// Урок 2: Optional и default параметры функций — РЕШЕНИЕ
+// Урок 2: Optional і default параметри функцій — РІШЕННЯ
 // ============================================================
 
 // ------------------------------------------------------------
-// Задача 1: РАЗМИНКА — Optional параметр
+// Завдання 1: РОЗМИНКА — Optional параметр
 // ------------------------------------------------------------
 function printOrderInfo(orderId: number, status?: string): void {
-  console.log(`Заказ #${orderId}: ${status ?? 'статус неизвестен'}`);
+  console.log(`Замовлення #${orderId}: ${status ?? 'статус невідомий'}`);
 }
-printOrderInfo(123, 'отправлен');
+printOrderInfo(123, 'відправлено');
 printOrderInfo(123);
 
 // ------------------------------------------------------------
-// Задача 2: ОСНОВНАЯ — Default параметры
+// Завдання 2: ОСНОВНЕ — Default параметри
 // ------------------------------------------------------------
 type ShippingResult = {
   destination: string;
@@ -32,12 +32,12 @@ function calculateShipping(
   return { destination, totalCost, express };
 }
 
-console.log(calculateShipping(7, 'Москва'));
-console.log(calculateShipping(6, 'Москва', true));
-console.log(calculateShipping(5, 'Москва', true, 10));
+console.log(calculateShipping(7, 'Київ'));
+console.log(calculateShipping(6, 'Київ', true));
+console.log(calculateShipping(5, 'Київ', true, 10));
 
 // ------------------------------------------------------------
-// Задача 3: ЧЕЛЛЕНДЖ — Комбинируй optional и default
+// Завдання 3: ЧЕЛЕНДЖ — Комбінуй optional і default
 // ------------------------------------------------------------
 function buildApiUrl(
   baseUrl: string,
@@ -56,7 +56,7 @@ console.log(buildApiUrl('https://api.example.com', '/products', 'v2'));
 console.log(buildApiUrl('https://api.example.com', '/products', 'v2', { limit: '10', page: '2' }));
 
 // ------------------------------------------------------------
-// Задача 4: ЗАКРЕПЛЕНИЕ — Optional + default
+// Завдання 4: ЗАКРІПЛЕННЯ — Optional + default
 // ------------------------------------------------------------
 function formatUserName(
   firstName: string,
@@ -70,12 +70,12 @@ function formatUserName(
   return uppercase ? name.toUpperCase() : name;
 }
 
-console.log(formatUserName('Иван', 'Иванов'));
-console.log(formatUserName('Иван', 'Иванов', 'Иванович'));
-console.log(formatUserName('Иван', 'Иванов', 'Иванович', true));
+console.log(formatUserName('Іван', 'Іванов'));
+console.log(formatUserName('Іван', 'Іванов', 'Іванович'));
+console.log(formatUserName('Іван', 'Іванов', 'Іванович', true));
 
 // ------------------------------------------------------------
-// Задача 5: ЗАКРЕПЛЕНИЕ — Работа с массивом и default
+// Завдання 5: ЗАКРІПЛЕННЯ — Робота з масивом і default
 // ------------------------------------------------------------
 function getTopItems(
   items: string[],

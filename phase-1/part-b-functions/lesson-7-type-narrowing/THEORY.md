@@ -1,117 +1,117 @@
-# Урок 7: Type Narrowing (Сужение типов)
+# Урок 7: Type Narrowing (Звуження типів)
 
-**Статус:** В процессе
+**Статус:** В процесі
 **Дата:** 2026-02-28
 
 ---
 
-## 📌 Тема урока
+## 📌 Тема уроку
 
-Type Narrowing — сужение типов. Это процесс, когда TypeScript автоматически уточняет (сужает) тип переменной внутри определённого блока кода на основе проверок.
+Type Narrowing — звуження типів. Це процес, коли TypeScript автоматично уточнює (звужує) тип змінної всередині певного блоку коду на основі перевірок.
 
 ---
 
-## 🎯 Цель урока
+## 🎯 Ціль уроку
 
-После урока ты будешь:
-- Понимать что такое "сужение типа" и зачем оно нужно
-- Уметь использовать разные способы narrowing
-- Понимать как TypeScript "думает" при анализе кода
-- Знать паттерн exhaustiveness checking
+Після уроку ти будеш:
+- Розуміти що таке "звуження типу" і навіщо воно потрібне
+- Вміти використовувати різні способи narrowing
+- Розуміти як TypeScript "думає" при аналізі коду
+- Знати патерн exhaustiveness checking
 
 ---
 
 ## 🤔 Проблема в JavaScript
 
-В JS у нас часто бывает переменная, которая может быть разного типа:
+В JS у нас часто буває змінна, яка може бути різного типу:
 
 ```js
-// JS — нет защиты, ошибки только в runtime
+// JS — немає захисту, помилки тільки в runtime
 function formatValue(value) {
-    return value.toUpperCase(); // 💥 CRASH если value — число!
+    return value.toUpperCase(); // 💥 CRASH якщо value — число!
 }
 
 formatValue("hello"); // OK
 formatValue(42);      // TypeError: value.toUpperCase is not a function
 ```
 
-Проблема: мы не знаем тип `value` в момент написания кода. Ошибка обнаруживается только при запуске.
+Проблема: ми не знаємо тип `value` в момент написання коду. Помилка виявляється тільки при запуску.
 
 ---
 
-## 📖 Теория
+## 📖 Теорія
 
-### Что такое Type Narrowing?
+### Що таке Type Narrowing?
 
-Narrowing — это когда TypeScript **сужает** (уточняет) тип переменной внутри блока кода.
+Narrowing — це коли TypeScript **звужує** (уточнює) тип змінної всередині блоку коду.
 
-Представь: у тебя есть переменная типа `string | number`. Это широкий тип — "либо строка, либо число". Когда ты пишешь `if (typeof value === "string")`, TypeScript **сужает** тип до просто `string` внутри этого блока.
+Уяви: у тебе є змінна типу `string | number`. Це широкий тип — "або рядок, або число". Коли ти пишеш `if (typeof value === "string")`, TypeScript **звужує** тип до просто `string` всередині цього блоку.
 
 ```
-string | number  →  (проверка)  →  string (внутри if)
-   широкий тип                       узкий тип
+string | number  →  (перевірка)  →  string (всередині if)
+   широкий тип                       вузький тип
 ```
 
-### Почему это важно?
+### Чому це важливо?
 
-Это позволяет TypeScript быть **умным**: он понимает что в каждой ветке кода доступно, и разрешает только те методы, которые точно существуют для данного типа.
+Це дозволяє TypeScript бути **розумним**: він розуміє що в кожній гілці коду доступно, і дозволяє тільки ті методи, які точно існують для даного типу.
 
 ---
 
-## 💡 Способы сужения типов
+## 💡 Способи звуження типів
 
 ### 1. typeof narrowing
 
-Уже знакомо из прошлого урока:
+Вже знайоме з минулого уроку:
 
 ```typescript
 function formatValue(value: string | number): string {
     if (typeof value === "string") {
-        // TypeScript знает: здесь value — точно string
+        // TypeScript знає: тут value — точно string
         return value.toUpperCase(); // ✅ OK
     } else {
-        // TypeScript знает: здесь value — точно number
+        // TypeScript знає: тут value — точно number
         return value.toFixed(2); // ✅ OK
     }
 }
 ```
 
-### 2. Truthiness narrowing (проверка на правдивость)
+### 2. Truthiness narrowing (перевірка на правдивість)
 
 ```typescript
 function greet(name: string | null): string {
     if (name) {
-        // TypeScript знает: name не null и не пустая строка
-        return `Привет, ${name.toUpperCase()}!`;
+        // TypeScript знає: name не null і не порожній рядок
+        return `Привіт, ${name.toUpperCase()}!`;
     }
-    return "Привет, гость!";
+    return "Привіт, гостю!";
 }
 ```
 
-Что считается "ложным" (falsy) в JavaScript:
+Що вважається "хибним" (falsy) в JavaScript:
 - `null`
 - `undefined`
 - `0`
-- `""` (пустая строка)
+- `""` (порожній рядок)
 - `false`
 - `NaN`
 
-### 3. Equality narrowing (проверка равенства)
+### 3. Equality narrowing (перевірка рівності)
 
 ```typescript
 function compare(x: string | number, y: string | boolean): void {
     if (x === y) {
-        // Если x === y, то оба должны быть одного типа
-        // TypeScript знает: здесь оба — string
+        // Якщо x === y, то обидва повинні бути одного типу
+        // TypeScript знає: тут обидва — string
         console.log(x.toUpperCase()); // ✅ OK
         console.log(y.toUpperCase()); // ✅ OK
     }
 }
 ```
 
-### 4. in narrowing (проверка свойства)
+### 4. in narrowing (перевірка властивості)
 
-Уже знакомо:
+Вже знайоме:
 
 ```typescript
 type Cat = { meow: () => void };
@@ -119,40 +119,40 @@ type Dog = { bark: () => void };
 
 function makeSound(animal: Cat | Dog): void {
     if ("meow" in animal) {
-        // TypeScript знает: здесь animal — Cat
+        // TypeScript знає: тут animal — Cat
         animal.meow();
     } else {
-        // TypeScript знает: здесь animal — Dog
+        // TypeScript знає: тут animal — Dog
         animal.bark();
     }
 }
 ```
 
-### 5. instanceof narrowing (проверка класса)
+### 5. instanceof narrowing (перевірка класу)
 
 ```typescript
 function processDate(value: Date | string): string {
     if (value instanceof Date) {
-        // TypeScript знает: здесь value — Date
+        // TypeScript знає: тут value — Date
         return value.toISOString();
     }
-    // TypeScript знает: здесь value — string
+    // TypeScript знає: тут value — string
     return value.toUpperCase();
 }
 ```
 
-### 6. Discriminated unions (размеченные объединения)
+### 6. Discriminated unions (розмічені об'єднання)
 
-Это один из самых мощных паттернов. Суть: у каждого типа есть общее поле-"метка" с уникальным литеральным значением:
+Це один з найпотужніших патернів. Суть: у кожного типу є спільне поле-"мітка" з унікальним літеральним значенням:
 
 ```typescript
 type Circle = {
-    kind: "circle";    // ← метка
+    kind: "circle";    // ← мітка
     radius: number;
 };
 
 type Square = {
-    kind: "square";    // ← метка
+    kind: "square";    // ← мітка
     side: number;
 };
 
@@ -161,20 +161,20 @@ type Shape = Circle | Square;
 function getArea(shape: Shape): number {
     switch (shape.kind) {
         case "circle":
-            // TypeScript знает: здесь shape — Circle
+            // TypeScript знає: тут shape — Circle
             return Math.PI * shape.radius ** 2;
         case "square":
-            // TypeScript знает: здесь shape — Square
+            // TypeScript знає: тут shape — Square
             return shape.side ** 2;
     }
 }
 ```
 
-Поле `kind` — это и есть "дискриминант" (метка). TypeScript использует его для сужения.
+Поле `kind` — це і є "дискримінант" (мітка). TypeScript використовує його для звуження.
 
-### 7. Exhaustiveness checking (проверка полноты)
+### 7. Exhaustiveness checking (перевірка повноти)
 
-Что если добавим новый тип, но забудем обработать его? TypeScript может поймать это:
+Що якщо додамо новий тип, але забудемо його обробити? TypeScript може спіймати це:
 
 ```typescript
 type Triangle = {
@@ -192,36 +192,36 @@ function getArea(shape: Shape): number {
         case "square":
             return shape.side ** 2;
         default:
-            // Если мы забыли обработать "triangle" — TypeScript покажет ошибку здесь
+            // Якщо ми забули обробити "triangle" — TypeScript покаже помилку тут
             const _exhaustive: never = shape; // ❌ Type 'Triangle' is not assignable to type 'never'
             throw new Error("Unknown shape");
     }
 }
 ```
 
-Тип `never` означает "сюда никогда не должны попасть". Если TypeScript видит что сюда может попасть какой-то тип — это ошибка.
+Тип `never` означає "сюди ніколи не повинні потрапити". Якщо TypeScript бачить що сюди може потрапити якийсь тип — це помилка.
 
 ---
 
 ## 🔍 JS vs TS
 
 ```javascript
-// JS — нет защиты
+// JS — немає захисту
 function processInput(input) {
     if (typeof input === "string") {
-        return input.toUpperCase(); // Надеемся что всё OK
+        return input.toUpperCase(); // Сподіваємося що все OK
     }
-    return input * 2; // Надеемся что это число
+    return input * 2; // Сподіваємося що це число
 }
 ```
 
 ```typescript
-// TS — TypeScript проверяет каждую ветку
+// TS — TypeScript перевіряє кожну гілку
 function processInput(input: string | number): string | number {
     if (typeof input === "string") {
-        return input.toUpperCase(); // ✅ TypeScript уверен — это string
+        return input.toUpperCase(); // ✅ TypeScript впевнений — це string
     }
-    return input * 2; // ✅ TypeScript уверен — это number
+    return input * 2; // ✅ TypeScript впевнений — це number
 }
 ```
 
@@ -229,33 +229,33 @@ function processInput(input: string | number): string | number {
 
 ## ✍️ Практика
 
-Задачи находятся в файле `practice.ts`.
+Завдання знаходяться у файлі `practice.ts`.
 
 ---
 
-## ✅ Проверка понимания (после практики)
+## ✅ Перевірка розуміння (після практики)
 
-1. Что такое type narrowing своими словами?
-2. Чем discriminated union отличается от обычного union?
-3. Зачем нужен `never` в exhaustiveness checking?
-4. Когда лучше использовать `switch` с `kind`, а когда `if` с `typeof`?
-
----
-
-## 🛠️ Практический совет
-
-Discriminated unions — один из самых используемых паттернов в реальных проектах:
-- Состояния загрузки: `{ status: "loading" } | { status: "success", data: T } | { status: "error", message: string }`
-- Типы событий в Redux/state machines
-- Результаты API запросов
+1. Що таке type narrowing своїми словами?
+2. Чим discriminated union відрізняється від звичайного union?
+3. Навіщо потрібен `never` в exhaustiveness checking?
+4. Коли краще використовувати `switch` з `kind`, а коли `if` з `typeof`?
 
 ---
 
-## 📝 Дополнительные заметки
+## 🛠️ Практична порада
 
-*(Здесь будут появляться ответы на твои вопросы)*
+Discriminated unions — один з найбільш використовуваних патернів в реальних проектах:
+- Стани завантаження: `{ status: "loading" } | { status: "success", data: T } | { status: "error", message: string }`
+- Типи подій в Redux/state machines
+- Результати API запитів
 
 ---
 
-*Создано: 2026-02-28*
-*Обновлено: 2026-02-28*
+## 📝 Додаткові нотатки
+
+*(Тут будуть з'являтися відповіді на твої питання)*
+
+---
+
+*Створено: 2026-02-28*
+*Оновлено: 2026-02-28*
