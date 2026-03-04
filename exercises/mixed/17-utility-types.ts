@@ -1,10 +1,8 @@
-export { };
+// ============================================================
+// Урок B9: Utility Types — Partial, Pick, Omit, Record
+// ============================================================
 
-// ============================================================
-// УРОК 9: Utility Types — Partial, Pick, Omit, Record
-// ============================================================
-// Для запуска: npx ts-node practice.ts
-// ============================================================
+export {};
 
 // Базовый тип — используется во всех задачах
 interface User {
@@ -33,16 +31,6 @@ interface User {
 
 // 👇 Пиши здесь:
 
-type UserUpdate = Partial<User>
-type арапр = Required<User>
-
-function updateUser(id: number, changes: UserUpdate): void {
-  console.log(`Обновляем #${id}`, changes);
-}
-updateUser(1, { name: "Иван" })
-updateUser(2, { email: "new@mail.com", age: 30 })
-updateUser(3, {})
-
 // ============================================================
 // ЗАДАЧА 2 — Pick: публичный профиль и форма входа
 // ============================================================
@@ -52,16 +40,8 @@ updateUser(3, {})
 //
 // Напиши функцию getPublicProfile(user: User): PublicProfile
 // Она возвращает объект только с нужными полями.
-//
-// Подсказка: { id: user.id, name: user.name, age: user.age }
 
 // 👇 Пиши здесь:
-type PublicProfile = Pick<User, 'id' | 'name' | 'age'>;
-type LoginCredentials = Pick<User, 'email' | 'password'>;
-
-function getPublicProfile(user: User): PublicProfile {
-  return { id: user.id, name: user.name, age: user.age }
-}
 
 // ============================================================
 // ЗАДАЧА 3 — Omit: создание пользователя
@@ -77,10 +57,7 @@ function getPublicProfile(user: User): PublicProfile {
 // Проверь что TS не даёт передать id или createdAt в createUser()
 
 // 👇 Пиши здесь:
-type CreateUserDTO = Omit<User, 'id' | 'createdAt'>
-function createUser(data: CreateUserDTO): User {
-  return { ...data, id: Math.floor(Math.random() * 1000), createdAt: new Date() }
-}
+
 // ============================================================
 // ЗАДАЧА 4 — Record: справочник статусов
 // ============================================================
@@ -97,25 +74,8 @@ function createUser(data: CreateUserDTO): User {
 //   cancelled → "Отменено"
 //
 // Напиши функцию getStatusLabel(status: TaskStatus): string
-// Она возвращает русское название для переданного статуса.
 
 // 👇 Пиши здесь:
-type TaskStatus = "todo" | "in-progress" | "done" | "cancelled";
-type StatusLables = Record<TaskStatus, string>;
-const statusLables: StatusLables = {
-  todo: 'К выполнению',
-  "in-progress": 'В работе',
-  done: 'Готово',
-  cancelled: 'Отменено'
-
-}
-
-function getStatusLabel(status: TaskStatus): string {
-  return statusLables[status]
-}
-
-console.log(getStatusLabel('todo'));
-
 
 // ============================================================
 // ЗАДАЧА 5 — Челлендж: комбинирование (Partial + Omit)
@@ -137,16 +97,3 @@ console.log(getStatusLabel('todo'));
 //    console.log(updated);
 
 // 👇 Пиши здесь:
-type EditProfileForm = Partial<Omit<User, "id" | "email" | "createdAt">>
-
-function applyProfileEdit(user: User, form: EditProfileForm): User {
-
-  return { ...user, ...form }
-}
-const user: User = {
-  id: 1, name: "Анна", email: "anna@mail.com",
-  password: "secret", age: 25, createdAt: new Date()
-};
-
-const updated = applyProfileEdit(user, { name: "Анна Иванова", age: 26 });
-console.log(updated);
