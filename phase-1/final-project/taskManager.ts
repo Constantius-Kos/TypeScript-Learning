@@ -125,8 +125,17 @@ function deleteTask(id: number): boolean {
 //     - подсказка: .toLowerCase().includes(...)
 //
 // Напиши здесь:
+function filterByStatus(status: TaskStatus): Task[] {
+    const filteredTasks = tasks.filter((t) => t.status === status)
+    return filteredTasks
+}
+function filterByPriority(priority: TaskPriority): Task[] {
+    return tasks.filter((t) => t.priority === priority)
+}
 
-
+function searchTasks(query: string): Task[] {
+    return tasks.filter((t) => t.title.toLowerCase().includes(query.toLowerCase()) || t.description?.toLowerCase().includes(query.toLowerCase()))
+}
 
 
 // ============================================================
@@ -145,7 +154,18 @@ function deleteTask(id: number): boolean {
 //     - количество задач в каждом статусе
 //
 // Напиши здесь:
+type TaskPreview = Pick<Task, 'id' | 'title' | 'status' | 'priority'>
+function getTaskPreview(task: Task): TaskPreview {
+    return { id: task.id, title: task.title, status: task.status, priority: task.priority }
+}
 
+function getSummary(): Record<TaskStatus, number> {
+    return tasks.reduce((acc, t) => {
+        acc[t.status] += 1;
+        return acc
+    }, { todo: 0, 'in-progress': 0, done: 0 }
+    )
+}
 
 
 
@@ -154,12 +174,17 @@ function deleteTask(id: number): boolean {
 // ============================================================
 // Раскомментируй после того как напишешь все этапы:
 
-// const t1 = addTask({ title: "Изучить TypeScript", status: "todo", priority: "high" });
-// const t2 = addTask({ title: "Сделать проект", description: "Task Manager", status: "in-progress", priority: "medium" });
-// const t3 = addTask({ title: "Написать тесты", status: "todo", priority: "low" });
+const t1 = addTask({ title: "Изучить TypeScript", status: "todo", priority: "high" });
+const t2 = addTask({ title: "Сделать проект", description: "Task Manager", status: "in-progress", priority: "medium" });
+const t3 = addTask({ title: "Написать тесты", status: "todo", priority: "low" });
 
-// console.log("Все задачи:", getAllTasks());
-// console.log("Todo задачи:", filterByStatus("todo"));
-// updateTask(t1.id, { status: "done" });
-// console.log("После обновления:", getTaskPreview(getAllTasks()[0]));
-// console.log("Сводка:", getSummary());
+console.log("Все задачи:", getAllTasks());
+console.log("Todo задачи:", filterByStatus("todo"));
+updateTask(t1.id, { status: "done" });
+console.log("После обновления:", getTaskPreview(getAllTasks()[0]));
+console.log("Сводка:", getSummary());
+console.log("По приоритету high:", filterByPriority("high"));
+console.log("Поиск 'тест':", searchTasks("тест"));
+deleteTask(t3.id);
+console.log("После удаления:", getAllTasks().length);
+console.log("t2:", t2.title, "t3 удалён");
