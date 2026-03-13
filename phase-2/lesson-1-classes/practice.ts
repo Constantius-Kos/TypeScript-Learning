@@ -1,54 +1,104 @@
-export {};
+export { };
 
 // ============================================================
-// Урок 1: Классы в TypeScript — Практика
+// Урок 1: Класи в TypeScript — Практика
 // ============================================================
 
-// Задача 1: Разминка
-// Создай класс Animal с двумя свойствами: name (string) и sound (string).
-// Добавь метод speak() который возвращает строку:
-// "Кот говорит: Мяу"
-// Используй shorthand через constructor.
-// Создай экземпляр и вызови speak().
+// Задача 1: Розминка
+// Створи клас Animal з двома властивостями: name (string) і sound (string).
+// Додай метод speak() який повертає рядок:
+// "Кіт каже: Мяу"
+// Використай shorthand через constructor.
+// Створи екземпляр і викличи speak().
 
-// Напиши здесь:
+// Напиши тут:
+class Animal {
+    constructor(public name: string, public sound: string) { }
+    speak(): void {
+        console.log(`${this.name} каже: ${this.sound}`);
+    }
+}
 
+const cat = new Animal('Кіт', 'Мяу')
 
+cat.speak()
 
 // ============================================================
 
-// Задача 2: Основная
-// Создай класс BankAccount (банковский счёт).
-// Свойства:
-//   - owner: string (владелец)
-//   - readonly accountNumber: string (номер счёта, не меняется)
-//   - balance: number (баланс, начальное значение 0)
+// Задача 2: Основна
+// Створи клас BankAccount (банківський рахунок).
+// Властивості:
+//   - owner: string (власник)
+//   - readonly accountNumber: string (номер рахунку, не змінюється)
+//   - balance: number (баланс, початкове значення 0)
 //
-// Методы:
-//   - deposit(amount: number): void — пополнить счёт
-//   - withdraw(amount: number): boolean — снять деньги.
-//     Если денег хватает — снимает и возвращает true.
-//     Если не хватает — ничего не делает и возвращает false.
-//   - getInfo(): string — возвращает строку вида:
-//     "Счёт #ABC123 | Владелец: Алекс | Баланс: 1000₽"
+// Методи:
+//   - deposit(amount: number): void — поповнити рахунок
+//   - withdraw(amount: number): boolean — зняти гроші.
+//     Якщо грошей вистачає — знімає і повертає true.
+//     Якщо не вистачає — нічого не робить і повертає false.
+//   - getInfo(): string — повертає рядок виду:
+//     "Рахунок #ABC123 | Власник: Алекс | Баланс: 1000₴"
 //
-// Создай экземпляр, пополни счёт, сними деньги, выведи getInfo().
+// Створи екземпляр, поповни рахунок, зніми гроші, виведи getInfo().
 
-// Напиши здесь:
+// Напиши тут:
+class BankAccount {
+    constructor(public owner: string, public readonly accountNumber: string, public balance: number) { }
+    deposit(amount: number): void {
+        this.balance += amount
+    }
 
+    withdraw(amount: number): boolean {
+        if (this.balance >= amount) {
+            this.balance -= amount
+            return true
+        }
+        return false
+    }
 
+    getInfo(): string {
+        return `Рахунок: ${this.accountNumber} | Власник: ${this.owner} | Баланс: ${this.balance} `
+    }
+}
 
+const newAcc = new BankAccount("Костянтин", '123jk1j1lk41k', 0)
+newAcc.deposit(1000)
+newAcc.withdraw(888)
+const result = newAcc.getInfo()
+console.log(result);
 // ============================================================
 
-// Задача 3: Челлендж (опционально)
-// Создай класс TodoList для управления задачами.
-// Каждая задача: { id: number, text: string, done: boolean }
-// Методы:
+// Задача 3: Челендж (опціонально)
+// Створи клас TodoList для керування задачами.
+// Кожна задача: { id: number, text: string, done: boolean }
+// Методи:
 //   - addTask(text: string): void
 //   - completeTask(id: number): void
-//   - getTasks(): массив всех задач
-//   - getPending(): массив незавершённых задач
+//   - getTasks(): масив всіх задач
+//   - getPending(): масив незавершених задач
 //
-// Подсказка: id генерируй автоматически через private счётчик.
+// Підказка: id генеруй автоматично через private лічильник.
 
-// Напиши здесь:
+// Напиши тут:
+type Task = { id: number, text: string, done: boolean }
+class TodoList {
+    private nextId = 1
+    private tasks: Task[] = []
+
+    addTask(text: string): void {
+        const id = this.nextId
+        this.nextId++
+        this.tasks.push({ id, text, done: false })
+    }
+    completeTask(id: number): void {
+        this.tasks = this.tasks.map((t) => t.id === id ? { ...t, done: true } : t)
+    }
+
+    getTasks(): Task[] {
+        return this.tasks
+    }
+    getPending(): Task[] {
+        return this.tasks.filter((t) => t.done === false)
+    }
+}
