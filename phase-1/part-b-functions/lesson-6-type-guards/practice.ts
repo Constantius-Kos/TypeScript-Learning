@@ -20,7 +20,7 @@ function describe(value: string | number): string {
     if (typeof value === 'string') { return `рядок довжиною ${value.length} символів` }
     return `Число подвоєне: ${value * 2}`
 }
-console.log(describe('уйпідаджигурда'));
+console.log(describe('test'));
 console.log(describe(12));
 // -------------------------------------------------------------
 // ЗАВДАННЯ 2 — Основне: оператор in
