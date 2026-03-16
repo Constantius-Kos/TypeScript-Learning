@@ -1,4 +1,4 @@
-export {};
+export { };
 
 // ============================================================
 // Урок 2: Модифікатори доступу — Практика
@@ -14,7 +14,18 @@ export {};
 // Створи екземпляр і виведи ім'я та вік через метод.
 
 // Напиши тут:
+class Person {
+    constructor(public name: string, private age: number) { }
 
+    getAge(): number {
+        return this.age
+    }
+}
+
+const user = new Person('Микола', 25)
+
+console.log(user.name);
+console.log(user.getAge());
 
 
 // ============================================================
@@ -34,8 +45,30 @@ export {};
 // Переконайся що напряму змінити balance неможливо.
 
 // Напиши тут:
+class BankAccount {
+    constructor(public owner: string, private balans: number) { }
 
+    deposit(amount: number): void {
+        amount > 0 ? this.balans += amount : console.log('Сума повинна бути більшою за 0');
+    }
+    withdraw(amount: number): boolean {
+        if (amount <= this.balans && this.balans > 0) {
+            this.balans -= amount
 
+            return true
+        }
+        return false
+    }
+
+    getBalance(): number {
+        return this.balans
+    }
+}
+
+const myBalance = new BankAccount('Kostiantyn', 0)
+myBalance.deposit(1000)
+myBalance.withdraw(112)
+console.log(myBalance.getBalance());
 
 // ============================================================
 
@@ -56,3 +89,21 @@ export {};
 // Створи екземпляр Manager і виведи getInfo().
 
 // Напиши тут:
+class Employee {
+    constructor(public name: string, protected salary: number) { }
+    getSalary(): number {
+        return this.salary
+    }
+}
+class Manager extends Employee {
+    constructor(name: string, salary: number, public departament: string) {
+        super(name, salary)
+    }
+
+    getInfo(): string {
+        return `Manager ${this.name} | Departament: ${this.departament} | Salary: ${this.salary}`
+    }
+}
+
+const newManager = new Manager('Alex', 5000, 'IT')
+console.log(newManager.getInfo());
